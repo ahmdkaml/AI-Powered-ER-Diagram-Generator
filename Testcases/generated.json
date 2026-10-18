@@ -1,0 +1,172 @@
+{
+  "entities": [
+    {
+      "name": "Branch",
+      "attributes": [
+        {
+          "name": "BranchID",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Name"
+        },
+        {
+          "name": "Address"
+        }
+      ]
+    },
+    {
+      "name": "Librarian",
+      "attributes": [
+        {
+          "name": "LibrarianID",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Name"
+        },
+        {
+          "name": "Email"
+        },
+        {
+          "name": "PhoneNumbers",
+          "isMultiValued": true
+        }
+      ]
+    },
+    {
+      "name": "Book",
+      "attributes": [
+        {
+          "name": "ISBN",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Title"
+        },
+        {
+          "name": "PublicationYear"
+        },
+        {
+          "name": "Authors",
+          "isMultiValued": true
+        }
+      ]
+    },
+    {
+      "name": "Copy",
+      "attributes": [
+        {
+          "name": "CopyNumber",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Condition"
+        },
+        {
+          "name": "AcquisitionDate"
+        }
+      ]
+    },
+    {
+      "name": "Member",
+      "attributes": [
+        {
+          "name": "MemberID",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Name"
+        },
+        {
+          "name": "Email"
+        },
+        {
+          "name": "Address"
+        }
+      ]
+    },
+    {
+      "name": "Supplier",
+      "attributes": [
+        {
+          "name": "SupplierID",
+          "isPrimaryKey": true
+        },
+        {
+          "name": "Name"
+        },
+        {
+          "name": "ContactEmail"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "name": "Employs",
+      "entity1": "Branch",
+      "entity2": "Librarian",
+      "cardinality": "1:N"
+    },
+    {
+      "name": "HasCopy",
+      "entity1": "Book",
+      "entity2": "Copy",
+      "cardinality": "1:N"
+    },
+    {
+      "name": "Borrowing",
+      "participants": [
+        {
+          "entity": "Member",
+          "cardinality": "N"
+        },
+        {
+          "entity": "Copy",
+          "cardinality": "N"
+        },
+        {
+          "entity": "Librarian",
+          "cardinality": "N"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "BorrowDate"
+        },
+        {
+          "name": "DueDate"
+        },
+        {
+          "name": "ReturnDate"
+        }
+      ]
+    },
+    {
+      "name": "Supply",
+      "participants": [
+        {
+          "entity": "Supplier",
+          "cardinality": "N"
+        },
+        {
+          "entity": "Book",
+          "cardinality": "N"
+        },
+        {
+          "entity": "Branch",
+          "cardinality": "N"
+        }
+      ],
+      "attributes": [
+        {
+          "name": "SupplyDate"
+        },
+        {
+          "name": "Quantity"
+        }
+      ]
+    }
+  ]
+}

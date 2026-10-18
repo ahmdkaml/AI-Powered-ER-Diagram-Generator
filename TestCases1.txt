@@ -1,0 +1,198 @@
+﻿Lab 1: Part 1 Test Case
+{
+ "entities": [
+   {
+     "name": "University",
+     "attributes": [
+       { "name": "UniversityID", "isPrimaryKey": true },
+       { "name": "Name" },
+       { "name": "FoundedYear" }
+     ]
+   },
+   {
+     "name": "Department",
+     "attributes": [
+       { "name": "DeptID", "isPrimaryKey": true },
+       { "name": "Name" },
+       {
+         "name": "OfficeLocation",
+         "composite": ["Building", "Floor", "Room"]
+       }
+     ]
+   },
+   {
+     "name": "Employee",
+     "attributes": [
+       { "name": "EmployeeID", "isPrimaryKey": true },
+       {
+         "name": "Name",
+         "composite": ["FirstName", "MiddleName", "LastName"]
+       },
+       { "name": "Email" },
+       { "name": "Phone", "isMultiValued": true },
+       { "name": "HireDate" }
+     ]
+   },
+   {
+     "name": "Student",
+     "attributes": [
+       { "name": "StudentID", "isPrimaryKey": true },
+       {
+         "name": "Name",
+         "composite": ["FirstName", "LastName"]
+       },
+       { "name": "DateOfBirth" },
+       { "name": "Email" },
+       { "name": "Phone", "isMultiValued": true },
+       {
+         "name": "Address",
+         "composite": ["Street", "City", "Governorate", "PostalCode"]
+       }
+     ]
+   },
+   {
+     "name": "Course",
+     "attributes": [
+       { "name": "CourseID", "isPrimaryKey": true },
+       { "name": "Title" },
+       { "name": "CreditHours" }
+     ]
+   },
+   {
+     "name": "Section",
+     "attributes": [
+       { "name": "SectionID", "isPrimaryKey": true },
+       { "name": "Semester" },
+       { "name": "AcademicYear" },
+       { "name": "Capacity" }
+     ]
+   },
+   {
+     "name": "Classroom",
+     "attributes": [
+       { "name": "ClassroomID", "isPrimaryKey": true },
+       { "name": "Building" },
+       { "name": "RoomNumber" },
+       { "name": "Capacity" }
+     ]
+   },
+   {
+     "name": "Dependent",
+     "isWeak": true,
+     "attributes": [
+       { "name": "DependentName", "isPartialKey": true },
+       { "name": "DateOfBirth" },
+       { "name": "RelationshipToEmployee" }
+     ]
+   },
+   {
+     "name": "ResearchProject",
+     "attributes": [
+       { "name": "ProjectID", "isPrimaryKey": true },
+       { "name": "Title" },
+       { "name": "StartDate" },
+       { "name": "Budget" }
+     ]
+   }
+ ],
+ "relationships": [
+   {
+     "name": "BelongsTo",
+     "entity1": "Department",
+     "entity2": "University",
+     "cardinality": "N:1"
+   },
+   {
+     "name": "WorksIn",
+     "entity1": "Employee",
+     "entity2": "Department",
+     "cardinality": "N:1",
+     "attributes": [
+       { "name": "StartDate" }
+     ]
+   },
+   {
+     "name": "StudiesIn",
+     "entity1": "Student",
+     "entity2": "Department",
+     "cardinality": "N:1"
+   },
+   {
+     "name": "Offers",
+     "entity1": "Department",
+     "entity2": "Course",
+     "cardinality": "1:N"
+   },
+   {
+     "name": "HasSection",
+     "entity1": "Course",
+     "entity2": "Section",
+     "cardinality": "1:N"
+   },
+   {
+     "name": "EnrolledIn",
+     "entity1": "Student",
+     "entity2": "Section",
+     "cardinality": "M:N",
+     "attributes": [
+       { "name": "EnrollmentDate" },
+       { "name": "Grade" }
+     ]
+   },
+   {
+     "name": "ScheduledIn",
+     "entity1": "Section",
+     "entity2": "Classroom",
+     "cardinality": "N:1",
+     "attributes": [
+       { "name": "DayOfWeek" },
+       { "name": "StartTime" },
+       { "name": "EndTime" }
+     ]
+   },
+   {
+     "name": "HasDependent",
+     "type": "identifying",
+     "entity1": "Employee",
+     "entity2": "Dependent",
+     "cardinality": "1:N"
+   },
+   {
+     "name": "SupervisesProject",
+     "participants": [
+       { "entity": "Employee", "cardinality": "N" },
+       { "entity": "ResearchProject", "cardinality": "N" },
+       { "entity": "Department", "cardinality": "N" }
+     ],
+     "attributes": [
+       { "name": "Responsibility" },
+       { "name": "AllocationPercentage" }
+     ]
+   },
+   {
+     "name": "UsesResource",
+     "participants": [
+       { "entity": "ResearchProject", "cardinality": "N" },
+       { "entity": "Employee", "cardinality": "N" },
+       { "entity": "Classroom", "cardinality": "N" }
+     ],
+     "attributes": [
+       { "name": "UsageDate" },
+       { "name": "HoursUsed" }
+     ]
+   }
+ ]
+}
+	
+
+Lab 1: Part 2 Test Case
+A public library has branches. Each branch has a unique BranchID, name, and address. A branch employs many librarians, and each librarian works at exactly one branch. A librarian has a unique LibrarianID, name, email, and multiple phone numbers.
+
+
+The library has books identified by ISBN, title, publication year, and one or more authors. A book may have multiple physical copies. A copy is weak: it is identified by its owning book together with a CopyNumber, which is a partial key. Each copy has a condition and an acquisition date. The identifying relationship between Book and Copy must be represented explicitly.
+
+
+Members have a unique MemberID, name, email, and address. Members can borrow copies, and a copy can be borrowed by different members over time. Each borrowing event records BorrowDate, DueDate, and optional ReturnDate. A librarian processes each borrowing event.
+
+
+A supplier supplies a particular book to a particular branch. This is a ternary relationship among Supplier, Book, and Branch, with attributes SupplyDate and Quantity. A supplier has a unique SupplierID, name, and contact email. A branch may receive the same book from multiple suppliers. Preserve the ternary relationship rather than splitting it into binary relationships.
